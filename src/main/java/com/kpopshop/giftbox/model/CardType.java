@@ -1,4 +1,4 @@
-package com.giftbox.backend.model;
+package com.kpopshop.giftbox.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,15 +6,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="GiftBoxColors")
-@Data@AllArgsConstructor
+@Document(collection="CardTypes")
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class GiftBoxColor {
-
+public class CardType {
     @Id
-    private String BoxColorId;
-    private String color;
+    private String CardId;
+    private String type;
     private String image;
-
-
 }

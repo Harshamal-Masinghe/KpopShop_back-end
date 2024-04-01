@@ -1,7 +1,7 @@
-package com.giftbox.backend.controller;
+package com.kpopshop.giftbox.controller;
 
-import com.giftbox.backend.model.GiftBox;
-import com.giftbox.backend.service.GiftBoxService;
+import com.kpopshop.giftbox.model.GiftBox;
+import com.kpopshop.giftbox.service.GiftBoxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

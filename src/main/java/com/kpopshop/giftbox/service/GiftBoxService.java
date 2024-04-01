@@ -1,7 +1,7 @@
-package com.giftbox.backend.service;
+package com.kpopshop.giftbox.service;
 
-import com.giftbox.backend.model.GiftBox;
-import com.giftbox.backend.reposotory.GiftBoxRepository;
+import com.kpopshop.giftbox.model.GiftBox;
+import com.kpopshop.giftbox.reposotory.GiftBoxRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

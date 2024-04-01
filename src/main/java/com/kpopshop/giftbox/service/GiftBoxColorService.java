@@ -1,8 +1,8 @@
-package com.giftbox.backend.service;
+package com.kpopshop.giftbox.service;
 
 
-import com.giftbox.backend.model.GiftBoxColor;
-import com.giftbox.backend.reposotory.GiftBoxColorRepository;
+import com.kpopshop.giftbox.model.GiftBoxColor;
+import com.kpopshop.giftbox.reposotory.GiftBoxColorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
-package com.giftbox.backend.reposotory;
+package com.kpopshop.giftbox.reposotory;
 
-import com.giftbox.backend.model.GiftBox;
+import com.kpopshop.giftbox.model.GiftBox;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface GiftBoxRepository extends MongoRepository<GiftBox, String> {

@@ -1,7 +1,7 @@
-package com.giftbox.backend.controller;
+package com.kpopshop.giftbox.controller;
 
-import com.giftbox.backend.model.CardType;
-import com.giftbox.backend.service.CardTypeService;
+import com.kpopshop.giftbox.model.CardType;
+import com.kpopshop.giftbox.service.CardTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

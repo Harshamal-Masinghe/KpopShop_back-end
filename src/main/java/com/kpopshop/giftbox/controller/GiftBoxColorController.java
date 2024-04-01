@@ -1,8 +1,8 @@
-package com.giftbox.backend.controller;
+package com.kpopshop.giftbox.controller;
 
 
-import com.giftbox.backend.model.GiftBoxColor;
-import com.giftbox.backend.service.GiftBoxColorService;
+import com.kpopshop.giftbox.model.GiftBoxColor;
+import com.kpopshop.giftbox.service.GiftBoxColorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

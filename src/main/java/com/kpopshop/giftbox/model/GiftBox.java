@@ -1,4 +1,4 @@
-package com.giftbox.backend.model;
+package com.kpopshop.giftbox.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;

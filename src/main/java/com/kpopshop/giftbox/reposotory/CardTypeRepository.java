@@ -1,6 +1,6 @@
-package com.giftbox.backend.reposotory;
+package com.kpopshop.giftbox.reposotory;
 
-import com.giftbox.backend.model.CardType;
+import com.kpopshop.giftbox.model.CardType;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface CardTypeRepository extends MongoRepository<CardType, String> {
