@@ -15,47 +15,47 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
-    //create
+    // Create a new product
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product createProduct(@RequestBody Product product){
+    public Product createProduct(@RequestBody Product product) {
         return service.addProduct(product);
     }
 
-    //search no filter
+    // Retrieve all products
     @GetMapping
-    public List<Product> getCardType(){
+    public List<Product> getAllProducts() {
         return service.findAllProducts();
     }
 
-    //search by ID
+    // Retrieve a product by ID
     @GetMapping("/{productID}")
-    public Product getProductById(@PathVariable String productID){
+    public Product getProductById(@PathVariable String productID) {
         return service.getProductById(productID);
     }
 
-    //search by price
-    @GetMapping("/{price}")
-    public List<Product> findProductUsingPrice(@PathVariable Double price){
+    // Retrieve products by price
+    @GetMapping("/price/{price}")
+    public List<Product> findProductsByPrice(@PathVariable Double price) {
         return service.getProductByPrice(price);
     }
 
-    //search by name
-    @GetMapping("/{name}")
-    public List<Product> findProductUsingName(@PathVariable String name){
+    // Retrieve products by name
+    @GetMapping("/name/{name}")
+    public List<Product> findProductsByName(@PathVariable String name) {
         return service.getProductByName(name);
     }
 
-    //update
-    @PutMapping
-    public Product modifyProduct(@RequestBody Product product){
-        return service.upateProduct(product);
+    // Update an existing product
+    @PutMapping("/{productID}")
+    public Product updateProduct(@PathVariable String productID, @RequestBody Product product) {
+        product.setProductId(productID); // Set the product ID from the path variable
+        return service.updateProduct(product);
     }
 
-    //delete
-    @DeleteMapping("/{productId}")
-    public String deleteProduct(@PathVariable String productId){
-        return service.deleteProduct(productId);
+    // Delete a product by ID
+    @DeleteMapping("/{productID}")
+    public String deleteProduct(@PathVariable String productID) {
+        return service.deleteProduct(productID);
     }
-
 }

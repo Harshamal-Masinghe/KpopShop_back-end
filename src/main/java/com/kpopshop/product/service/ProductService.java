@@ -1,5 +1,6 @@
 package com.kpopshop.product.service;
 
+import com.kpopshop.product.model.Category;
 import com.kpopshop.product.model.Product;
 import com.kpopshop.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,18 +42,45 @@ public class ProductService {
         return repository.findByName(name);
     }
 
-    //update
-    public Product upateProduct(Product productRequest){
-        //get the existing document from DB
-        Product existingProduct = repository.findById(productRequest.getProductID()).get();
-        existingProduct.setName(productRequest.getName());
-        existingProduct.setPrice(productRequest.getPrice());
-        existingProduct.setImage(productRequest.getImage());
-        existingProduct.setStatus(productRequest.getStatus());
-        existingProduct.setDescription(productRequest.getDescription());
-        existingProduct.setGiftBoxProduct(productRequest.isGiftBoxProduct());
-        return repository.save(existingProduct);
+    //search by category
+    public List<Product> getProductByCategory(Category category){
+        return repository.findByCategory(category);
     }
+
+    //search by size
+    public List<Product> getProductBySize(String size){
+        return repository.findBySize(size);
+    }
+
+    // Update product with all attributes
+    public Product updateProduct(Product productRequest) {
+        // Get the existing product from the database
+        Product existingProduct = repository.findById(productRequest.getProductID()).orElse(null);
+
+        // Check if the product exists
+        if (existingProduct != null) {
+            // Update all attributes of the existing product with the attributes from the request object
+            existingProduct.setName(productRequest.getName());
+            existingProduct.setDescription(productRequest.getDescription());
+            existingProduct.setPrice(productRequest.getPrice());
+            existingProduct.setQuantity(productRequest.getQuantity());
+            existingProduct.setStatus(productRequest.getStatus());
+            existingProduct.setImageURL(productRequest.getImageURL());
+            existingProduct.setSize(productRequest.getSize());
+            existingProduct.setGiftBoxProduct(productRequest.isGiftBoxProduct());
+            existingProduct.setCategory(productRequest.getCategory());
+            existingProduct.setReorderLevels(productRequest.getReorderLevels());
+            existingProduct.setOrders(productRequest.getOrders());
+            existingProduct.setAlerts(productRequest.getAlerts());
+
+            // Save the updated product back to the database
+            return repository.save(existingProduct);
+        } else {
+            // Handle case when product does not exist
+            return null; // or throw an exception
+        }
+    }
+
 
     //delete
     public String deleteProduct(String productId){
