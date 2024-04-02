@@ -9,14 +9,23 @@ import java.util.List;
 
 @Service
 public class ProductService {
+
+    private final ProductRepository productRepository;
+
     @Autowired
-    private ProductRepository repository;
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     public List<Product> findAllProducts(){
-        return repository.findAll();
+        return productRepository.findAll();
     }
 
     public Product getProductById(String productID){
-        return repository.findById(productID).get();
+        return productRepository.findById(productID).orElse(null);
+    }
+
+    public List<Product> getGiftBoxProducts() {
+        return productRepository.findByGiftBoxProduct(true);
     }
 }

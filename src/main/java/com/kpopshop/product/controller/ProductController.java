@@ -11,17 +11,26 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/products")
 public class ProductController {
+    private final ProductService productService;
+
     @Autowired
-    private ProductService service;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping
-    public List<Product> getCardType(){
-        return service.findAllProducts();
+    public List<Product> getProducts(){
+        return productService.findAllProducts();
     }
 
     @GetMapping("/{productID}")
     public Product getProductById(@PathVariable String productID){
-        return service.getProductById(productID);
+        return productService.getProductById(productID);
+    }
+
+    @GetMapping("/giftbox-products")
+    public List<Product> getGiftBoxProducts() {
+        return productService.getGiftBoxProducts();
     }
 
 }
