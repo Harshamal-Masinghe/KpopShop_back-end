@@ -1,5 +1,5 @@
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://madhini00:1234@cluster0.oqqgxrp.mongodb.net/
-      database: KpopShop
+      uri: mongodb+srv://madhini00:1234@cluster0.oqqgxrp.mongodb.net/  # MongoDB connection URI
+      database: KpopShop  # MongoDB database name

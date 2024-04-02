@@ -11,17 +11,30 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/products")
 public class ProductController {
+
+    private final ProductService productService;
+
+    // Constructor injection
     @Autowired
-    private ProductService service;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
+    // Endpoint to retrieve all products
     @GetMapping
-    public List<Product> getCardType(){
-        return service.findAllProducts();
+    public List<Product> getProducts() {
+        return productService.findAllProducts();
     }
 
-    @GetMapping("/{productID}")
-    public Product getProductById(@PathVariable String productID){
-        return service.getProductById(productID);
+    // Endpoint to retrieve a product by its ID
+    @GetMapping("/{productId}")
+    public Product getProductById(@PathVariable String productId) {
+        return productService.getProductById(productId);
     }
 
+    // Endpoint to retrieve all gift box products
+    @GetMapping("/giftbox-products")
+    public List<Product> getGiftBoxProducts() {
+        return productService.getGiftBoxProducts();
+    }
 }

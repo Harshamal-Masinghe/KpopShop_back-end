@@ -4,19 +4,31 @@ import com.kpopshop.product.model.Product;
 import com.kpopshop.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class ProductService {
-    @Autowired
-    private ProductRepository repository;
 
-    public List<Product> findAllProducts(){
-        return repository.findAll();
+    private final ProductRepository productRepository;
+
+    // Constructor injection
+    @Autowired
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
-    public Product getProductById(String productID){
-        return repository.findById(productID).get();
+    // Retrieve all products from the repository
+    public List<Product> findAllProducts() {
+        return productRepository.findAll();
+    }
+
+    // Retrieve a product by its ID from the repository
+    public Product getProductById(String productId) {
+        return productRepository.findById(productId).orElse(null);
+    }
+
+    // Retrieve all products marked as gift box products from the repository
+    public List<Product> getGiftBoxProducts() {
+        return productRepository.findByGiftBoxProduct(true);
     }
 }
