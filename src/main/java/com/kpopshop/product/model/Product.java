@@ -25,12 +25,6 @@ public class Product {
     private int quantity;
     private boolean giftBoxProduct;
 
-    @DBRef
-    private Category category;
-
-    private List<ReorderLevel> reorderLevels;
-    private List<Order> orders;
-    private List<Alert> alerts;
 
     public void setProductId(String productId) {
         this.productID = productId;
