@@ -18,7 +18,7 @@ public class ProductService {
 
     //create
     public Product addProduct(Product product) {
-        product.setProductID(UUID.randomUUID().toString().split("-")[0]);
+        product.setProductId(UUID.randomUUID().toString().split("-")[0]);
         return repository.save(product);
     }
 
