@@ -2,6 +2,9 @@ package com.kpopshop.product.model;
 
 import jakarta.persistence.*;
 
+
+
+
 @Entity
 public class InventoryItem {
     @Id

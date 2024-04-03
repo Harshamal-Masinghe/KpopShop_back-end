@@ -3,10 +3,7 @@ package com.kpopshop.product.controller;
 import com.kpopshop.product.model.Product;
 import com.kpopshop.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
 import org.springframework.http.HttpStatus;
-=======
->>>>>>> 47a4117566cbd92523a056bf93a5d4fffd5353c2
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +12,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/products")
 public class ProductController {
-<<<<<<< HEAD
+
     @Autowired
     private ProductService productService;
 
@@ -28,7 +25,7 @@ public class ProductController {
 
     // Retrieve all products
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<Product> getProducts(){
         return productService.findAllProducts();
     }
 
@@ -62,17 +59,14 @@ public class ProductController {
     public String deleteProduct(@PathVariable String productID) {
         return productService.deleteProduct(productID);
     }
-=======
+
 
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    @GetMapping
-    public List<Product> getProducts(){
-        return productService.findAllProducts();
-    }
+
 
 
 
@@ -81,5 +75,4 @@ public class ProductController {
         return productService.getGiftBoxProducts();
     }
 
->>>>>>> 47a4117566cbd92523a056bf93a5d4fffd5353c2
 }

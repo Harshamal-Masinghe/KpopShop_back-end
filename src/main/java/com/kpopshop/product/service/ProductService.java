@@ -1,16 +1,12 @@
 package com.kpopshop.product.service;
 
-<<<<<<< HEAD
 import com.kpopshop.product.model.Category;
-=======
->>>>>>> 47a4117566cbd92523a056bf93a5d4fffd5353c2
 import com.kpopshop.product.model.Product;
 import com.kpopshop.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-<<<<<<< HEAD
 import java.util.UUID;
 
 @Service
@@ -32,32 +28,32 @@ public class ProductService {
     }
 
     //search no filter
-    public List<Product> findAllProducts(){
+    public List<Product> findAllProducts() {
         return productRepository.findAll();
     }
 
     //search by ID
-    public Product getProductById(String productID){
+    public Product getProductById(String productID) {
         return productRepository.findById(productID).orElse(null);
     }
 
     //search by price
-    public List<Product> getProductByPrice(Double price){
+    public List<Product> getProductByPrice(Double price) {
         return productRepository.findByPrice(price);
     }
 
     //search by name
-    public List<Product> getProductByName(String name){
+    public List<Product> getProductByName(String name) {
         return productRepository.findByName(name);
     }
 
     //search by category
-    public List<Product> getProductByCategory(Category category){
+    public List<Product> getProductByCategory(Category category) {
         return productRepository.findByCategory(category);
     }
 
     //search by size
-    public List<Product> getProductBySize(String size){
+    public List<Product> getProductBySize(String size) {
         return productRepository.findBySize(size);
     }
 
@@ -74,8 +70,8 @@ public class ProductService {
             existingProduct.setPrice(productRequest.getPrice());
             existingProduct.setQuantity(productRequest.getQuantity());
             existingProduct.setStatus(productRequest.getStatus());
-            existingProduct.setImageURL(productRequest.getImageURL());
-            existingProduct.setSize(productRequest.getSize());
+            existingProduct.setImage(productRequest.getImage());
+            //existingProduct.setSize(productRequest.getSize());
             existingProduct.setGiftBoxProduct(productRequest.isGiftBoxProduct());
             existingProduct.setCategory(productRequest.getCategory());
             existingProduct.setReorderLevels(productRequest.getReorderLevels());
@@ -92,16 +88,16 @@ public class ProductService {
 
 
     //delete
-    public String deleteProduct(String productId){
+    public String deleteProduct(String productId) {
         productRepository.deleteById(productId);
         return productId + "Product delete from database";
-        }
+    }
 
     public List<Product> getGiftBoxProducts() {
         return productRepository.findByGiftBoxProduct(true);
     }
 
-    }
-=======
+}
+
 
 
