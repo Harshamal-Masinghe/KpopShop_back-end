@@ -14,13 +14,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.3</version>
+        <version>3.2.3</version> <!-- Parent Spring Boot version -->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <!-- Properties -->
     <properties>
-        <java.version>8</java.version>
+        <java.version>8</java.version> <!-- Java version -->
     </properties>
 
     <!-- Dependencies -->
@@ -57,6 +57,33 @@
             <artifactId>lombok</artifactId>
             <version>1.18.32</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- PDFBox for PDF manipulation -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.24</version>
+        </dependency>
+
+        <!-- Spring Boot Starter for Mail -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <exclusions>
+                <!-- Exclude javax.mail from spring-boot-starter-mail -->
+                <exclusion>
+                    <groupId>com.sun.mail</groupId>
+                    <artifactId>javax.mail</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Include Jakarta Mail API -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>1.6.7</version> <!-- Jakarta Mail API version -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

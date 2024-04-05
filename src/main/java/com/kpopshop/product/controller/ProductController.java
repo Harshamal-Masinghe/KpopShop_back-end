@@ -37,4 +37,10 @@ public class ProductController {
     public List<Product> getGiftBoxProducts() {
         return productService.getGiftBoxProducts();
     }
+
+    // Endpoint to manually trigger a low inventory alert for a specific product
+    @PostMapping("/{productId}/trigger-low-inventory-alert")
+    public void triggerLowInventoryAlert(@PathVariable String productId) {
+        productService.triggerLowInventoryAlert(productId);
+    }
 }

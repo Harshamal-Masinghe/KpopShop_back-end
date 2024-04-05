@@ -1,10 +1,10 @@
 package com.kpopshop.product.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
 
 // Annotation to specify MongoDB collection
 @Document(collection="Product")
@@ -40,4 +40,10 @@ public class Product {
 
     // Indicates whether the product is a gift box product or not
     private boolean giftBoxProduct;
+
+    // Date and time of the low inventory alert trigger
+    @Getter
+    @Setter
+    private LocalDateTime alertTriggerDateTime;
+
 }
