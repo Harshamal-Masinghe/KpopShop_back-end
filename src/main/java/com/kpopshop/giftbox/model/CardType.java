@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class CardType {
     @Id
-    private String CardId;
+    private String cardId;
     private String type;
     private String image;
 }
