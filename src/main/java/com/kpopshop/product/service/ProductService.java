@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class ProductService {
 
+    @Autowired
     private final ProductRepository productRepository;
     private final EmailService emailService;
 
@@ -23,13 +26,13 @@ public class ProductService {
     }
 
     // Method to retrieve all products from the repository
-    public List<Product> findAllProducts() {
+    public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
     // Method to retrieve a product by its ID from the repository
-    public Product getProductById(String productId) {
-        return productRepository.findById(productId).orElse(null);
+    public Optional<Product> getProductById(String id) {
+        return productRepository.findById(id);
     }
 
     // Method to retrieve all products marked as gift box products from the repository
@@ -39,13 +42,14 @@ public class ProductService {
 
     // Method to trigger low inventory alert and update alertTriggerDateTime
     public void triggerLowInventoryAlert(String productId) {
-        Product product = getProductById(productId);
-        if (product != null && product.getQuantity() <= 5) {
-            // Set the alert trigger date and time to the current date and time
-            product.setAlertTriggerDateTime(LocalDateTime.now());
-            // Update the product in the repository
-            productRepository.save(product);
-            // Optionally, you can notify managers or perform other actions here
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            if (product.getQuantity() < 5) {
+                sendLowInventoryEmail(product);
+                product.setAlertTriggerDateTime(LocalDateTime.now());
+                productRepository.save(product);
+            }
         }
     }
 
@@ -64,5 +68,18 @@ public class ProductService {
     public List<Product> findLowInventoryProducts() {
         // Fetch products with quantity below a certain threshold (e.g., 5)
         return productRepository.findByQuantityLessThan(5);
+    }
+
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+    public Product updateProduct(String id, Product updatedProduct) {
+        updatedProduct.setId(id);
+        return productRepository.save(updatedProduct);
+    }
+
+    public void deleteProduct(String id) {
+        productRepository.deleteById(id);
     }
 }
