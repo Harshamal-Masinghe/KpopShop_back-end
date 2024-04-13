@@ -14,38 +14,19 @@ import java.util.Optional;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private final ProductService productService;
-
-    // Constructor injection
     @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
+    private ProductService productService;
 
-    // Endpoint to retrieve all products
     @GetMapping
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
-    // Endpoint to retrieve a product by its ID
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable String id) {
         Optional<Product> product = productService.getProductById(id);
         return product.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    // Endpoint to retrieve all gift box products
-    @GetMapping("/giftbox-products")
-    public List<Product> getGiftBoxProducts() {
-        return productService.getGiftBoxProducts();
-    }
-
-    // Endpoint to manually trigger a low inventory alert for a specific product
-    @PostMapping("/{productId}/trigger-low-inventory-alert")
-    public void triggerLowInventoryAlert(@PathVariable String productId) {
-        productService.triggerLowInventoryAlert(productId);
     }
 
     @PostMapping
@@ -64,5 +45,11 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Endpoint to retrieve all gift box products
+    @GetMapping("/giftbox-products")
+    public List<Product> getGiftBoxProducts() {
+        return productService.getGiftBoxProducts();
     }
 }
