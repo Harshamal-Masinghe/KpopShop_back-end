@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 // Annotation to specify MongoDB collection
-@Document(collection = "Category")
+@Document(collection = "Sizes")
 @Data // Lombok annotation for generating getters, setters, toString, equals, and hashCode methods
 @AllArgsConstructor // Lombok annotation to generate constructor with all arguments
 @NoArgsConstructor // Lombok annotation to generate constructor with no arguments
@@ -16,7 +16,5 @@ public class Size {
     // MongoDB document ID
     @Id
     private String sizeId;
-
-    // Name of the size
-    private String name;
+    private static String name;
 }
