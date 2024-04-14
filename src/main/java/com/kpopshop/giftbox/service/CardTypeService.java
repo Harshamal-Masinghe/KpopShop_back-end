@@ -16,8 +16,8 @@ public class CardTypeService {
         return repository.findAll();
     }
 
-    public CardType getCardTypebyId(String BoxColorId){
-        return repository.findById(BoxColorId).get();
+    public CardType getCardTypebyId(String cardId){
+        return repository.findById(cardId).orElse(null);
     }
 
 }

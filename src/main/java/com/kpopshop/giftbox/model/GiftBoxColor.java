@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class GiftBoxColor {
 
     @Id
-    private String BoxColorId;
+    private String boxColorId;
     private String color;
     private String image;
 
