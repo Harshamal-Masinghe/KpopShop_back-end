@@ -15,6 +15,6 @@ public class Category {
 
     // MongoDB document ID
     @Id
-    private String categoryId;
-    private static String name;
+    private String id;
+    private String name;
 }

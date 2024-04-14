@@ -5,11 +5,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import java.time.LocalDateTime;
 
-// Annotation to specify MongoDB collection
+
 @Document(collection="Products")
 @Data // Lombok annotation for generating getters, setters, toString, equals, and hashCode methods
 @AllArgsConstructor // Lombok annotation to generate constructor with all arguments
@@ -27,10 +24,5 @@ public class Product {
     private boolean giftBoxProduct;
     private double price;
     private int quantity;
-
-    // Date and time of the low inventory alert trigger
-    @Getter
-    @Setter
-    private LocalDateTime alertTriggerDateTime;
 
 }

@@ -15,6 +15,6 @@ public class Size {
 
     // MongoDB document ID
     @Id
-    private String sizeId;
-    private static String name;
+    private String id;
+    private String name;
 }
