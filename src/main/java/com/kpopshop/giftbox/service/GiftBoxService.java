@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GiftBoxService {
@@ -23,28 +24,43 @@ public class GiftBoxService {
     }
 
     public GiftBox getGiftBoxbyId(String giftBoxId){
-        return repository.findById(giftBoxId).get();
+        return repository.findById(giftBoxId).orElse(null);
     }
 
     //search by other
 
     public GiftBox updateGiftBox(GiftBox giftBoxRequest){
-        GiftBox existingBox = repository.findById(giftBoxRequest.getGiftBoxId()).get();
+        GiftBox existingBox = repository.findById(giftBoxRequest.getGiftBoxId()).orElseThrow(() -> new RuntimeException("GiftBox not found"));
+
         existingBox.setBoxColor(giftBoxRequest.getBoxColor());
-        existingBox.setCardType(existingBox.getCardType());
-        existingBox.setMessage(existingBox.getGiftBoxId());
+        existingBox.setCardType(giftBoxRequest.getCardType());
+        existingBox.setMessage(giftBoxRequest.getMessage());
 
         List<GiftBox.GiftBoxProduct> existingProducts = existingBox.getProducts();
         List<GiftBox.GiftBoxProduct> updatedProducts = giftBoxRequest.getProducts();
-        for (GiftBox.GiftBoxProduct existingProduct : existingProducts) {
-            for (GiftBox.GiftBoxProduct updatedProduct : updatedProducts) {
+
+        List<GiftBox.GiftBoxProduct> filteredProducts = updatedProducts.stream()
+                .filter(product -> product.getQuantity() > 0)
+                .collect(Collectors.toList());
+
+        for (GiftBox.GiftBoxProduct updatedProduct : updatedProducts) {
+            for (GiftBox.GiftBoxProduct existingProduct : existingProducts) {
                 if (existingProduct.getProductId().equals(updatedProduct.getProductId())) {
-                    // Update the quantity for the matching product
+                    existingProduct.setName(updatedProduct.getName());
+                    existingProduct.setPrice(updatedProduct.getPrice());
                     existingProduct.setQuantity(updatedProduct.getQuantity());
-                    break; // Move to the next existing product
+                    break;
                 }
             }
         }
+        // Recalculate total amount based on updated products
+        double totalAmount = existingProducts.stream()
+                .mapToDouble(product -> product.getPrice() * product.getQuantity())
+                .sum();
+        existingBox.setTotalAmount(totalAmount);
+
+        existingBox.setProducts(filteredProducts);
+
         return repository.save(existingBox);
 
     }

@@ -8,11 +8,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="CardTypes")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class CardType {
     @Id
     private String cardId;
     private String type;
     private String image;
+
+
+
+
 }

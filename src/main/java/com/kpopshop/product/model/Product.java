@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
 
 @Document(collection="Product")
 @Data
@@ -14,15 +13,18 @@ import java.util.List;
 @NoArgsConstructor
 public class Product {
     @Id
-    private String productID;
+    private String productId;
+    private String category;
     private String name;
+    private String size;
+    private String imageUrl;
     private String description;
-    private double price;
-    private String status;
-    private String image;
-    //private Category category;  Representing the foreign key relationship
-    //private List<Size> sizes; create sizes class including quantity
     private boolean giftBoxProduct;
+    private double price;
+    private int quantity;
+    //private Category category;  Representing the foreign key relationship
+
 
 
 }
+

@@ -21,8 +21,8 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getProductById(String productID){
-        return productRepository.findById(productID).orElse(null);
+    public Product getProductById(String productId){
+        return productRepository.findById(productId).orElse(null);
     }
 
     public List<Product> getGiftBoxProducts() {
