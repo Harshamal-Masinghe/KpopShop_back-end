@@ -35,7 +35,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
-    @PutMapping("/{id}")
+   @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable String id, @RequestBody Product updatedProduct) {
         Product product = productService.updateProduct(id, updatedProduct);
         return ResponseEntity.ok(product);
@@ -43,7 +43,12 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
-        productService.deleteProduct(id);
+        System.out.println("Deleting product with ID: " + id);
+        try {
+            productService.deleteProduct(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return ResponseEntity.noContent().build();
     }
 
