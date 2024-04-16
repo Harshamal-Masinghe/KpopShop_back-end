@@ -15,6 +15,7 @@ public class GiftBoxColor {
     private String boxColorId;
     private String color;
     private String image;
+    private double price;
 
 
 }

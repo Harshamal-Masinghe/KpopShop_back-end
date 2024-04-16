@@ -36,6 +36,8 @@ public class GiftBoxService {
         existingBox.setCardType(giftBoxRequest.getCardType());
         existingBox.setMessage(giftBoxRequest.getMessage());
 
+        System.out.println("Box color price: " + existingBox.getBoxColor().getPrice());
+
         List<GiftBox.GiftBoxProduct> existingProducts = existingBox.getProducts();
         List<GiftBox.GiftBoxProduct> updatedProducts = giftBoxRequest.getProducts();
 
@@ -56,7 +58,9 @@ public class GiftBoxService {
         // Recalculate total amount based on updated products
         double totalAmount = existingProducts.stream()
                 .mapToDouble(product -> product.getPrice() * product.getQuantity())
-                .sum();
+                .sum() + existingBox.getBoxColor().getPrice();
+
+
         existingBox.setTotalAmount(totalAmount);
 
         existingBox.setProducts(filteredProducts);
