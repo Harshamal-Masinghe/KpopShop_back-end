@@ -52,6 +52,11 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/low-inventory")
+    public List<Product> getLowInventoryProducts() {
+        return productService.getLowInventoryProducts();
+    }
+
     // Endpoint to retrieve all gift box products
     @GetMapping("/giftbox-products")
     public List<Product> getGiftBoxProducts() {

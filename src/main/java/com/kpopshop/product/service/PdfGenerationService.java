@@ -10,14 +10,23 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PdfGenerationService {
 
     public ByteArrayInputStream generateLowInventoryPdf(List<Product> lowInventoryProducts) throws IOException {
+        int numberOfColumns = 5; // Adjust this based on the number of product attributes
+        int numberOfRows = lowInventoryProducts.size() + 1; // +1 for the header row
+
+        // Define a custom page size
+        float pageWidth = numberOfColumns * 250; // Adjust as needed
+        float pageHeight = numberOfRows * 100; // Adjust as needed
+        PDRectangle pageSize = new PDRectangle(pageWidth, pageHeight);
+
         PDDocument document = new PDDocument();
-        PDPage page = new PDPage();
+        PDPage page = new PDPage(pageSize);
         document.addPage(page);
 
         PDPageContentStream contentStream = null;
@@ -27,17 +36,17 @@ public class PdfGenerationService {
             float yStart = page.getMediaBox().getHeight() - margin;
             float tableWidth = page.getMediaBox().getWidth() - (2 * margin);
             float yPosition = yStart;
-            float rowHeight = 20;
+            float rowHeight = (page.getMediaBox().getHeight() - 2 * margin) / numberOfRows;
             float tableMargin = 2;
-            int numberOfColumns = 8; // Adjust this based on the number of product attributes
 
             // Define column widths
-            float[] columnWidths = {tableWidth / numberOfColumns, tableWidth / numberOfColumns, tableWidth / numberOfColumns,
-                    tableWidth / numberOfColumns, tableWidth / numberOfColumns, tableWidth / numberOfColumns,
-                    tableWidth / numberOfColumns, tableWidth / numberOfColumns};
+            float[] columnWidths = new float[numberOfColumns];
+            for (int i = 0; i < numberOfColumns; i++) {
+                columnWidths[i] = tableWidth / (numberOfColumns - 0.5f); // Decrease the denominator to increase the column width
+            }
 
             // Define table header titles
-            String[] tableHeader = {"Product ID", "Category", "Name", "Size", "Image URL", "Description", "Price", "Quantity"};
+            String[] tableHeader = {"Product ID", "Product Name", "Category", "Price", "Quantity"};
 
             // Draw table header
             drawTableHeader(contentStream, yPosition, rowHeight, margin, tableWidth, columnWidths, tableHeader);
@@ -45,17 +54,9 @@ public class PdfGenerationService {
             // Draw table rows
             yPosition -= rowHeight;
             for (Product product : lowInventoryProducts) {
-                if (yPosition < margin) {
-                    PDPage newPage = new PDPage();
-                    document.addPage(newPage);
-                    contentStream.close();
-                    try (PDPageContentStream newContentStream = new PDPageContentStream(document, newPage)) {
-                        contentStream = newContentStream;
-                        drawTableHeader(contentStream, yStart, rowHeight, margin, tableWidth, columnWidths, tableHeader);
-                        yPosition = yStart - rowHeight;
-                    }
-                }
-                drawTableRow(contentStream, yPosition, rowHeight, margin, tableWidth, columnWidths, product);
+                String[] rowData = {product.getProductId(), product.getName(), product.getCategory().getName(),
+                        String.valueOf(product.getPrice()), String.valueOf(product.getQuantity())};
+                drawTableRow(contentStream, yPosition, rowHeight, margin, tableWidth, columnWidths, rowData);
                 yPosition -= rowHeight;
             }
         } finally {
@@ -73,7 +74,7 @@ public class PdfGenerationService {
 
     private void drawTableHeader(PDPageContentStream contentStream, float yPosition, float rowHeight,
                                  float margin, float tableWidth, float[] columnWidths, String[] headerTitles) throws IOException {
-        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
         contentStream.setLeading(14.5f);
         for (int i = 0; i < headerTitles.length; i++) {
             float tableMargin= 2;
@@ -86,19 +87,17 @@ public class PdfGenerationService {
     }
 
     private void drawTableRow(PDPageContentStream contentStream, float yPosition, float rowHeight,
-                              float margin, float tableWidth, float[] columnWidths, Product product) throws IOException {
-        String[] rowData = {product.getProductId(), product.getCategory().getName(), product.getName(),
-                product.getSize().getName(), product.getImageUrl(), product.getDescription(),
-                String.valueOf(product.getPrice()), String.valueOf(product.getQuantity())};
+                              float margin, float tableWidth, float[] columnWidths, String[] rowData) throws IOException {
 
-        contentStream.setFont(PDType1Font.HELVETICA, 10);
+        contentStream.setFont(PDType1Font.HELVETICA, 13);
         contentStream.setLeading(14.5f);
         for (int i = 0; i < rowData.length; i++) {
             float tableMargin= 2;
             float xPosition = margin + (i * columnWidths[i]) + tableMargin;
             contentStream.beginText();
             contentStream.newLineAtOffset(xPosition, yPosition);
-            contentStream.showText(rowData[i]);
+            String text = rowData[i].replace('\n', ' '); // Replace line feed characters with a space
+            contentStream.showText(text);
             contentStream.endText();
         }
     }
