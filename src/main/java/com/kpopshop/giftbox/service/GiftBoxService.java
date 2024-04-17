@@ -30,43 +30,46 @@ public class GiftBoxService {
     //search by other
 
     public GiftBox updateGiftBox(GiftBox giftBoxRequest){
-        GiftBox existingBox = repository.findById(giftBoxRequest.getGiftBoxId()).orElseThrow(() -> new RuntimeException("GiftBox not found"));
+        try {
+            GiftBox existingBox = repository.findById(giftBoxRequest.getGiftBoxId()).orElseThrow(() -> new RuntimeException("GiftBox not found"));
 
-        existingBox.setBoxColor(giftBoxRequest.getBoxColor());
-        existingBox.setCardType(giftBoxRequest.getCardType());
-        existingBox.setMessage(giftBoxRequest.getMessage());
+            existingBox.setBoxColor(giftBoxRequest.getBoxColor());
+            existingBox.setCardType(giftBoxRequest.getCardType());
+            existingBox.setMessage(giftBoxRequest.getMessage());
 
-        System.out.println("Box color price: " + existingBox.getBoxColor().getPrice());
+            System.out.println("Box color price: " + existingBox.getBoxColor().getPrice());
 
-        List<GiftBox.GiftBoxProduct> existingProducts = existingBox.getProducts();
-        List<GiftBox.GiftBoxProduct> updatedProducts = giftBoxRequest.getProducts();
+            List<GiftBox.GiftBoxProduct> existingProducts = existingBox.getProducts();
+            List<GiftBox.GiftBoxProduct> updatedProducts = giftBoxRequest.getProducts();
 
-        List<GiftBox.GiftBoxProduct> filteredProducts = updatedProducts.stream()
-                .filter(product -> product.getQuantity() > 0)
-                .collect(Collectors.toList());
+            List<GiftBox.GiftBoxProduct> filteredProducts = updatedProducts.stream()
+                    .filter(product -> product.getQuantity() > 0)
+                    .collect(Collectors.toList());
 
-        for (GiftBox.GiftBoxProduct updatedProduct : updatedProducts) {
-            for (GiftBox.GiftBoxProduct existingProduct : existingProducts) {
-                if (existingProduct.getProductId().equals(updatedProduct.getProductId())) {
-                    existingProduct.setName(updatedProduct.getName());
-                    existingProduct.setPrice(updatedProduct.getPrice());
-                    existingProduct.setQuantity(updatedProduct.getQuantity());
-                    break;
+            for (GiftBox.GiftBoxProduct updatedProduct : updatedProducts) {
+                for (GiftBox.GiftBoxProduct existingProduct : existingProducts) {
+                    if (existingProduct.getProductId().equals(updatedProduct.getProductId())) {
+                        existingProduct.setName(updatedProduct.getName());
+                        existingProduct.setPrice(updatedProduct.getPrice());
+                        existingProduct.setQuantity(updatedProduct.getQuantity());
+
+                    }
                 }
             }
+            // Recalculate total amount based on updated products
+            double totalAmount = existingProducts.stream()
+                    .mapToDouble(product -> product.getPrice() * product.getQuantity())
+                    .sum() + existingBox.getBoxColor().getPrice();
+
+
+            existingBox.setTotalAmount(totalAmount);
+
+            existingBox.setProducts(filteredProducts);
+
+            return repository.save(existingBox);
+        }catch(Exception e){
+            throw new RuntimeException("Error updating gift box: " + e.getMessage());
         }
-        // Recalculate total amount based on updated products
-        double totalAmount = existingProducts.stream()
-                .mapToDouble(product -> product.getPrice() * product.getQuantity())
-                .sum() + existingBox.getBoxColor().getPrice();
-
-
-        existingBox.setTotalAmount(totalAmount);
-
-        existingBox.setProducts(filteredProducts);
-
-        return repository.save(existingBox);
-
     }
 
     public String deleteGiftBox(String giftBoxId){
