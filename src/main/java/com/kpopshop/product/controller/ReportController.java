@@ -26,6 +26,20 @@ public class ReportController {
     @Autowired
     private PdfGenerationService pdfGenerationService;
 
+    @GetMapping("/all-inventory")
+    public ResponseEntity<InputStreamResource> downloadAllInventoryReport() throws IOException {
+        ByteArrayInputStream pdfStream = pdfGenerationService.generateAllInventoryPdf();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=all_inventory_report.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(pdfStream));
+    }
+
     @GetMapping("/low-inventory")
     public ResponseEntity<InputStreamResource> downloadLowInventoryReport() throws IOException {
         List<Product> lowInventoryProducts = productService.getLowInventoryProducts();
