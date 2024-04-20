@@ -20,8 +20,9 @@ public class GiftBoxColorController {
         return service.findAllGiftBoxColor();
     }
 
-    @GetMapping("/{giftBoxId}")
-    public GiftBoxColor getGiftBoxColor(@PathVariable String giftBoxId){
-        return service.getGiftBoxColorbyId(giftBoxId);
+    @GetMapping("/{boxColorId}")
+    public GiftBoxColor getGiftBoxColorbyId(@PathVariable String boxColorId) {
+        return service.getGiftBoxColorbyId(boxColorId);
     }
+
 }

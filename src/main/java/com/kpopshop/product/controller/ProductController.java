@@ -23,9 +23,9 @@ public class ProductController {
         return productService.findAllProducts();
     }
 
-    @GetMapping("/{productID}")
-    public Product getProductById(@PathVariable String productID){
-        return productService.getProductById(productID);
+    @GetMapping("/{productId}")
+    public Product getProductById(@PathVariable String productId){
+        return productService.getProductById(productId);
     }
 
     @GetMapping("/giftbox-products")
