@@ -17,6 +17,7 @@ public class GiftBox {
         private CardType cardType;
         private String message = "";
         private List<GiftBoxProduct> products;
+        @Setter
         private double totalAmount;
 
 

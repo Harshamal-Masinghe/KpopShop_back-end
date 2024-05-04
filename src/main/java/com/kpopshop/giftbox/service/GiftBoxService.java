@@ -2,9 +2,20 @@ package com.kpopshop.giftbox.service;
 
 import com.kpopshop.giftbox.model.GiftBox;
 import com.kpopshop.giftbox.reposotory.GiftBoxRepository;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +23,8 @@ import java.util.stream.Collectors;
 public class GiftBoxService {
     @Autowired
     private GiftBoxRepository repository;
+
+    private static final Logger logger = LoggerFactory.getLogger(GiftBoxService.class);
 
     //crud
 
@@ -36,6 +49,7 @@ public class GiftBoxService {
             existingBox.setBoxColor(giftBoxRequest.getBoxColor());
             existingBox.setCardType(giftBoxRequest.getCardType());
             existingBox.setMessage(giftBoxRequest.getMessage());
+            existingBox.setTotalAmount(giftBoxRequest.getTotalAmount());
 
             System.out.println("Box color price: " + existingBox.getBoxColor().getPrice());
 
@@ -53,16 +67,10 @@ public class GiftBoxService {
                         existingProduct.setPrice(updatedProduct.getPrice());
                         existingProduct.setQuantity(updatedProduct.getQuantity());
 
+
                     }
                 }
             }
-            // Recalculate total amount based on updated products
-            double totalAmount = existingProducts.stream()
-                    .mapToDouble(product -> product.getPrice() * product.getQuantity())
-                    .sum() + existingBox.getBoxColor().getPrice();
-
-
-            existingBox.setTotalAmount(totalAmount);
 
             existingBox.setProducts(filteredProducts);
 
@@ -77,21 +85,33 @@ public class GiftBoxService {
         return giftBoxId+"deleted";
     }
 
-    /* total calculation
 
-    private double calculateTotalAmount(GiftBox giftBox) {
-        double totalAmount = 0.0;
-        List<GiftBox.GiftBoxProduct> products = giftBox.getProducts();
-        for (GiftBox.GiftBoxProduct product : products) {
-            // Assuming the ProductService retrieves product details including price
-            Product productDetails = productService.getProductById(product.getProductId());
-            if (productDetails != null) {
-                double productPrice = productDetails.getPrice();
-                totalAmount += productPrice * product.getQuantity();
-            }
+    public void generateGiftBoxReport(GiftBox giftBox) {
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
+
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(100, 700);
+            contentStream.showText("Gift Box Summary Report");
+            contentStream.newLineAtOffset(0, -20);
+            contentStream.showText("Total Amount: $" + giftBox.getTotalAmount());
+            contentStream.endText();
+            contentStream.close();
+
+            // Specify the directory where the PDF file will be saved
+            Path directory = Paths.get("D:/Y2S/ITP");
+            Files.createDirectories(directory); // Create directories if they don't exist
+            Path filePath = directory.resolve("gift_box_report.pdf");
+
+            document.save(filePath.toFile());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return totalAmount;
-    }*/
+    }
+
 
 
 }
