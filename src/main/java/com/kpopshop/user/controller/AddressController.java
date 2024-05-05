@@ -31,12 +31,12 @@ public class AddressController {
         return addressService.getAddressById(addressId);
     }
 
-    @PutMapping("/addresses/{addressId}")
+    @PutMapping("/{addressId}")
     public Address updateAddress(@PathVariable String addressId, @RequestBody Address address) {
         return addressService.updateAddress(addressId, address);
     }
 
-    @DeleteMapping("/address/{addressID}")
+    @DeleteMapping("/{addressID}")
     public String deleteAddress(@PathVariable String addressID){
     return addressService.deleteAddress(addressID);
     }
