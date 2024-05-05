@@ -1,5 +1,6 @@
 package com.kpopshop.giftbox.model;
 
+import com.kpopshop.product.model.Product;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -25,6 +26,7 @@ public class GiftBox {
         @Setter
         @Getter
         public static class GiftBoxProduct {
+                Product product;
                 private String productId;
                 private String name;
                 private double price;
