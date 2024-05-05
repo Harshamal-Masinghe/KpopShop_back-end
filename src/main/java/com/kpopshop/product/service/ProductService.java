@@ -1,7 +1,11 @@
 package com.kpopshop.product.service;
 
+import com.kpopshop.product.model.Category;
 import com.kpopshop.product.model.Product;
+import com.kpopshop.product.model.Size;
+import com.kpopshop.product.repository.CategoryRepository;
 import com.kpopshop.product.repository.ProductRepository;
+import com.kpopshop.product.repository.SizeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +21,12 @@ public class ProductService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private SizeRepository sizeRepository;
 
     private boolean isEmailSent = false;
 
@@ -38,14 +48,16 @@ public class ProductService {
         if (existingProductOpt.isPresent()) {
             Product existingProduct = existingProductOpt.get();
 
-            if (updatedProduct.getCategory() != null) {
-                existingProduct.setCategory(updatedProduct.getCategory());
+            if (updatedProduct.getCategory() != null && updatedProduct.getCategory().getName() != null) {
+                Category category = categoryRepository.findByName(updatedProduct.getCategory().getName());
+                existingProduct.setCategory(category);
             }
             if (updatedProduct.getName() != null) {
                 existingProduct.setName(updatedProduct.getName());
             }
-            if (updatedProduct.getSize() != null) {
-                existingProduct.setSize(updatedProduct.getSize());
+            if (updatedProduct.getSize() != null && updatedProduct.getSize().getName() != null) {
+                Size size = sizeRepository.findByName(updatedProduct.getSize().getName());
+                existingProduct.setSize(size);
             }
             if (updatedProduct.getImageUrl() != null) {
                 existingProduct.setImageUrl(updatedProduct.getImageUrl());
