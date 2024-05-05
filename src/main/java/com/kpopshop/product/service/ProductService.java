@@ -38,6 +38,10 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
+    public List<Product> getProductsByQuery(String query) {
+        return productRepository.searchByAllAttributes(query);
+    }
+
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }

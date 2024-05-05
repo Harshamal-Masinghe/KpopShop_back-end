@@ -29,6 +29,11 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/search")
+    public List<Product> getProductsByQuery(@RequestParam String query) {
+        return productService.getProductsByQuery(query);
+    }
+
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product createdProduct = productService.createProduct(product);
