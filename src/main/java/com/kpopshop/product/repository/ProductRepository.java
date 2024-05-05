@@ -10,7 +10,4 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
     List<Product> findByQuantityLessThan(int i);
 
-    List<Product> findByCategoryName(String categoryName);
-
-    List<Product> findByCategoryId(String categoryId);
 }

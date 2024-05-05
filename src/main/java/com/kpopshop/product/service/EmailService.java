@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -21,15 +22,18 @@ public class EmailService {
     public void sendLowInventoryNotification(List<Product> lowInventoryProducts) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+
         try {
-            helper.setTo("manager@example.com"); // change this to the actual email address of the manager
+            helper.setTo("harshamalmasinghe2001@gmail.com");
             helper.setSubject("Low Inventory Alert");
+
             StringBuilder message = new StringBuilder("Low inventory alert:\n\n");
             for (Product product : lowInventoryProducts) {
                 message.append("Product ID: ").append(product.getProductId()).append("\n");
                 message.append("Name: ").append(product.getName()).append("\n");
                 message.append("Quantity: ").append(product.getQuantity()).append("\n\n");
             }
+
             helper.setText(message.toString());
             javaMailSender.send(mimeMessage);
         } catch (jakarta.mail.MessagingException e) {

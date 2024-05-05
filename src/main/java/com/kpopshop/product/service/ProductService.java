@@ -1,12 +1,17 @@
 package com.kpopshop.product.service;
 
+import com.kpopshop.product.model.Category;
 import com.kpopshop.product.model.Product;
+import com.kpopshop.product.model.Size;
+import com.kpopshop.product.repository.CategoryRepository;
 import com.kpopshop.product.repository.ProductRepository;
+import com.kpopshop.product.repository.SizeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Scheduled;
+
 import java.util.List;
 import java.util.Optional;
-import org.springframework.scheduling.annotation.Scheduled;
 
 @Service
 public class ProductService {
@@ -17,6 +22,14 @@ public class ProductService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private SizeRepository sizeRepository;
+
+    private boolean isEmailSent = false;
+
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -25,39 +38,44 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
-    public List<Product> findProductsByCategory(String categoryName) {
-        return productRepository.findByCategoryName(categoryName);
-    }
-
-    public List<Product> findProductsByCategoryId(String categoryId) {
-        return productRepository.findByCategoryId(categoryId);
-    }
-
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }
 
     public Product updateProduct(String id, Product updatedProduct) {
-        // Retrieve the existing product from the database
         Optional<Product> existingProductOpt = productRepository.findById(id);
 
         if (existingProductOpt.isPresent()) {
             Product existingProduct = existingProductOpt.get();
 
-            // Update the attributes of the existing product with the values from the updated product
-            // Check if each attribute in the updated product is not null before updating the corresponding attribute in the existing product
-            if (updatedProduct.getCategory() != null) {
-                existingProduct.setCategory(updatedProduct.getCategory());
+            if (updatedProduct.getCategory() != null && updatedProduct.getCategory().getName() != null) {
+                Category category = categoryRepository.findByName(updatedProduct.getCategory().getName());
+                existingProduct.setCategory(category);
             }
             if (updatedProduct.getName() != null) {
                 existingProduct.setName(updatedProduct.getName());
             }
-            if (updatedProduct.getSize() != null) {
-                existingProduct.setSize(updatedProduct.getSize());
+            if (updatedProduct.getSize() != null && updatedProduct.getSize().getName() != null) {
+                Size size = sizeRepository.findByName(updatedProduct.getSize().getName());
+                existingProduct.setSize(size);
             }
-            // Continue for all other attributes...
+            if (updatedProduct.getImageUrl() != null) {
+                existingProduct.setImageUrl(updatedProduct.getImageUrl());
+            }
+            if (updatedProduct.getDescription() != null) {
+                existingProduct.setDescription(updatedProduct.getDescription());
+            }
+            if (updatedProduct.getPrice() != 0) {
+                existingProduct.setPrice(updatedProduct.getPrice());
+            }
+            if (updatedProduct.getQuantity() != 0) {
+                existingProduct.setQuantity(updatedProduct.getQuantity());
+            }
+            if (updatedProduct.getProductId() != null) {
+                existingProduct.setProductId(updatedProduct.getProductId());
+            }
+            existingProduct.setGiftBoxProduct(updatedProduct.isGiftBoxProduct());
 
-            // Save the updated product to the database
             return productRepository.save(existingProduct);
         } else {
             throw new RuntimeException("Product not found with id: " + id);
@@ -65,21 +83,24 @@ public class ProductService {
     }
 
     public void deleteProduct(String id) {
-        System.out.println("Deleting product with ID: " + id);
         productRepository.deleteById(id);
     }
-    // Method to retrieve all products marked as gift box products from the repository
+
     public List<Product> getGiftBoxProducts() {
         return productRepository.findByGiftBoxProduct(true);
     }
-    @Scheduled(fixedRate = 60000) // Run every 60 seconds
+
+    @Scheduled(fixedRate = 60000)
     public void monitorLowInventory() {
-        List<Product> lowInventoryProducts = productRepository.findByQuantityLessThan(5);
-        if (!lowInventoryProducts.isEmpty()) {
-            // Send email notification to manager
-            emailService.sendLowInventoryNotification(lowInventoryProducts);
+        if (!isEmailSent) {
+            List<Product> lowInventoryProducts = productRepository.findByQuantityLessThan(5);
+            if (!lowInventoryProducts.isEmpty()) {
+                emailService.sendLowInventoryNotification(lowInventoryProducts);
+                isEmailSent = true;
+            }
         }
     }
+
     public List<Product> getLowInventoryProducts() {
         return productRepository.findByQuantityLessThan(5);
     }
