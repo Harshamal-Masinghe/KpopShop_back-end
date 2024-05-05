@@ -35,7 +35,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
-   @PutMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable String id, @RequestBody Product updatedProduct) {
         Product product = productService.updateProduct(id, updatedProduct);
         return ResponseEntity.ok(product);
@@ -57,7 +57,6 @@ public class ProductController {
         return productService.getLowInventoryProducts();
     }
 
-    // Endpoint to retrieve all gift box products
     @GetMapping("/giftbox-products")
     public List<Product> getGiftBoxProducts() {
         return productService.getGiftBoxProducts();
