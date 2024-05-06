@@ -4,7 +4,6 @@ import com.kpopshop.giftbox.model.GiftBox;
 import com.kpopshop.giftbox.reposotory.GiftBoxRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +35,7 @@ public class GiftBoxService {
             existingBox.setBoxColor(giftBoxRequest.getBoxColor());
             existingBox.setCardType(giftBoxRequest.getCardType());
             existingBox.setMessage(giftBoxRequest.getMessage());
+            existingBox.setTotalAmount(giftBoxRequest.getTotalAmount());
 
             System.out.println("Box color price: " + existingBox.getBoxColor().getPrice());
 
@@ -53,16 +53,10 @@ public class GiftBoxService {
                         existingProduct.setPrice(updatedProduct.getPrice());
                         existingProduct.setQuantity(updatedProduct.getQuantity());
 
+
                     }
                 }
             }
-            // Recalculate total amount based on updated products
-            double totalAmount = existingProducts.stream()
-                    .mapToDouble(product -> product.getPrice() * product.getQuantity())
-                    .sum() + existingBox.getBoxColor().getPrice();
-
-
-            existingBox.setTotalAmount(totalAmount);
 
             existingBox.setProducts(filteredProducts);
 
@@ -77,21 +71,7 @@ public class GiftBoxService {
         return giftBoxId+"deleted";
     }
 
-    /* total calculation
 
-    private double calculateTotalAmount(GiftBox giftBox) {
-        double totalAmount = 0.0;
-        List<GiftBox.GiftBoxProduct> products = giftBox.getProducts();
-        for (GiftBox.GiftBoxProduct product : products) {
-            // Assuming the ProductService retrieves product details including price
-            Product productDetails = productService.getProductById(product.getProductId());
-            if (productDetails != null) {
-                double productPrice = productDetails.getPrice();
-                totalAmount += productPrice * product.getQuantity();
-            }
-        }
-        return totalAmount;
-    }*/
 
 
 }
