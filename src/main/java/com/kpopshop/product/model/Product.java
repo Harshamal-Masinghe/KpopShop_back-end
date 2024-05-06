@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@Document(collection="Product")
+@Document(collection="Products")
 @Data // Lombok annotation for generating getters, setters, toString, equals, and hashCode methods
 @AllArgsConstructor // Lombok annotation to generate constructor with all arguments
 @NoArgsConstructor // Lombok annotation to generate constructor with no arguments

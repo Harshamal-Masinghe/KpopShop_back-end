@@ -102,7 +102,7 @@ public class GiftBoxService {
             contentStream.close();
 
             // Specify the directory where the PDF file will be saved
-            Path directory = Paths.get("D:/Y2S/ITP");
+            Path directory = Paths.get("D:/Y2S2/ITP");
             Files.createDirectories(directory); // Create directories if they don't exist
             Path filePath = directory.resolve("gift_box_report.pdf");
 
