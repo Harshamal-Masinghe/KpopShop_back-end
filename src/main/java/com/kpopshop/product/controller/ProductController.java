@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("products")
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
