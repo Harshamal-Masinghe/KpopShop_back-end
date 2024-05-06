@@ -29,13 +29,18 @@ public class ProductController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/search")
+    public List<Product> getProductsByQuery(@RequestParam String query) {
+        return productService.getProductsByQuery(query);
+    }
+
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product createdProduct = productService.createProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
-   @PutMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable String id, @RequestBody Product updatedProduct) {
         Product product = productService.updateProduct(id, updatedProduct);
         return ResponseEntity.ok(product);
@@ -57,7 +62,6 @@ public class ProductController {
         return productService.getLowInventoryProducts();
     }
 
-    // Endpoint to retrieve all gift box products
     @GetMapping("/giftbox-products")
     public List<Product> getGiftBoxProducts() {
         return productService.getGiftBoxProducts();
