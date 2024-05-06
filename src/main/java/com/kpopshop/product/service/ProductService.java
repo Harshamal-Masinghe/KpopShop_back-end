@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,10 @@ public class ProductService {
 
     public Optional<Product> getProductById(String id) {
         return productRepository.findById(id);
+    }
+
+    public List<Product> getProductsByQuery(String query) {
+        return productRepository.searchByAllAttributes(query);
     }
 
     public Product createProduct(Product product) {
@@ -70,6 +75,12 @@ public class ProductService {
             }
             if (updatedProduct.getQuantity() != 0) {
                 existingProduct.setQuantity(updatedProduct.getQuantity());
+                if (updatedProduct.getQuantity() <= 5) {
+                    emailService.sendLowInventoryNotification(Collections.singletonList(existingProduct));
+                    existingProduct.setLowInventoryEmailSent(true);
+                } else {
+                    existingProduct.setLowInventoryEmailSent(false);
+                }
             }
             if (updatedProduct.getProductId() != null) {
                 existingProduct.setProductId(updatedProduct.getProductId());

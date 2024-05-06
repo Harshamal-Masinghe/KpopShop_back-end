@@ -23,5 +23,6 @@ public class Product {
     private boolean giftBoxProduct;
     private double price;
     private int quantity;
+    private boolean lowInventoryEmailSent = false;
 
 }
