@@ -19,8 +19,8 @@ public class CardTypeController {
         return service.findAllCardTypes();
     }
 
-    @GetMapping("/{CardId}")
-    public CardType getGiftBoxColor(@PathVariable String CardId){
-        return service.getCardTypebyId(CardId);
+    @GetMapping("/{cardId}")
+    public CardType getGiftBoxColor(@PathVariable String cardId){
+        return service.getCardTypebyId(cardId);
     }
 }

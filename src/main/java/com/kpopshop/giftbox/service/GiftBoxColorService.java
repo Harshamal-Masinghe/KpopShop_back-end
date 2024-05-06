@@ -17,8 +17,10 @@ public class GiftBoxColorService {
         return repository.findAll();
     }
 
-    public GiftBoxColor getGiftBoxColorbyId(String BoxColorId){
-        return repository.findById(BoxColorId).get();
+    public GiftBoxColor getGiftBoxColorbyId(String boxColorId){
+        return repository.findById(boxColorId).orElse(null);
     }
+
+
 
 }
