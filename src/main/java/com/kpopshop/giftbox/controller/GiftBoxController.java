@@ -1,8 +1,5 @@
 package com.kpopshop.giftbox.controller;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import com.kpopshop.giftbox.model.GiftBox;
-import com.kpopshop.giftbox.reposotory.GiftBoxRepository;
 import com.kpopshop.giftbox.service.GiftBoxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +15,6 @@ public class GiftBoxController {
 
     @Autowired
     private GiftBoxService service;
-    @Autowired
-    private GiftBoxRepository repository;
 
 
     @PostMapping
@@ -71,20 +66,9 @@ public class GiftBoxController {
         return service.deleteGiftBox(giftBoxId);
     }
 
-    @PostMapping("/generate-pdf")
-    public String generateGiftBoxPDF() {
-        // Fetch gift box data from repository (or wherever you store it)
-        // Assuming you have a GiftBoxRepository injected into your controller
-        List<GiftBox> giftBoxes = repository.findAll(); // Fetch all gift boxes
-
-        // Generate PDF report
-        for (GiftBox giftBox : giftBoxes) {
-            service.generateGiftBoxReport(giftBox);
-        }
-
-        return "PDF reports generated successfully!";
 
 
-    }
+
 
 }
+
