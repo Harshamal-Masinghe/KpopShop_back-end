@@ -38,6 +38,10 @@ public class UserService {
     public List<User> getUserBYEmail(String email){
        return repository.getUserByEmail(email);
     }
+    public long countUsers() {
+        return repository.count();
+    }
+
 
     //UPDATE
 
