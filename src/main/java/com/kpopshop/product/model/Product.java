@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Document(collection="Products")
 @Data // Lombok annotation for generating getters, setters, toString, equals, and hashCode methods
 @AllArgsConstructor // Lombok annotation to generate constructor with all arguments
@@ -24,5 +23,6 @@ public class Product {
     private boolean giftBoxProduct;
     private double price;
     private int quantity;
+    private boolean lowInventoryEmailSent = false;
 
 }
