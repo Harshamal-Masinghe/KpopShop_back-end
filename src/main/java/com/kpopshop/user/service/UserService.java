@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,15 +30,24 @@ public class UserService {
 
 
     public User getUserByUserID(String UserID){
-        return repository.findById(UserID).get();
+        Optional<User> userOptional = repository.findById(UserID);
+        if(userOptional.isPresent()){
+            return userOptional.get();
+        } else {
+            throw new RuntimeException("User not found with id: " + UserID);
+        }
     }
     public List<User> getUserByUserName(String userName){
         return repository.findByUserName(userName);
     }
 
     public List<User> getUserBYEmail(String email){
-       return repository.getUserByEmail(email);
+        return repository.getUserByEmail(email);
     }
+    public long countUsers() {
+        return repository.count();
+    }
+
 
     //UPDATE
 
@@ -65,8 +75,8 @@ public class UserService {
 
     }
 
-   // public String deleteAddress(String addressID) {
-       // repository.deleteById(addressID);
-        //return addressID+"task deleted from dashboard";
+    // public String deleteAddress(String addressID) {
+    // repository.deleteById(addressID);
+    //return addressID+"task deleted from dashboard";
     //}
 }

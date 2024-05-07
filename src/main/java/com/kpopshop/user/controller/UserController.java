@@ -4,12 +4,15 @@ import com.kpopshop.user.model.User;
 import com.kpopshop.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping( "/users")
 
 public class UserController {
@@ -42,10 +45,16 @@ public class UserController {
     public List<User> getUserBYEmail(@PathVariable String email){
         return service.getUserBYEmail(email);
     }
+
+    @GetMapping("/count")
+    public long countUsers() {
+        return service.countUsers();
+    }
+
     //UPDATE
     @PutMapping("/{userID}")
     public User modifyUser(@RequestBody User user){
-       return service.updateUser(user);
+        return service.updateUser(user);
     }
     //DELETE
     @DeleteMapping("/{userID}")
@@ -53,10 +62,20 @@ public class UserController {
         return service.deleteUser(userID);
     }
 
+    // New endpoint to generate user report
+    @GetMapping("/report")
+    public ResponseEntity<Map<String, Object>> getUserReport() {
+        Map<String, Object> report = new HashMap<>();
+        List<User> users = service.findAllUsers();
+        long userCount = service.countUsers();
+        report.put("users", users);
+        report.put("userCount", userCount);
+        return ResponseEntity.ok(report);
+    }
+
     //@DeleteMapping("/address/{addressID}")
     //public String deleteAddress(@PathVariable String addressID){
-        //return service.deleteAddress(addressID);
+    //return service.deleteAddress(addressID);
     //}
 
 }
-
