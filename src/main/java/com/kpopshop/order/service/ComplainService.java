@@ -50,7 +50,7 @@ public class ComplainService {
     }
 
     public long getSolvedComplain(){
-        return complainRepository.countByComplainStatus("Done");
+        return complainRepository.countByComplainStatus("Resolved");
     }
 
     public List<ComplainModel> searchComplains(String complainType) {

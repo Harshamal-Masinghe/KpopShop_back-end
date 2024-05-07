@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ComplainModel {
     @Id
     private String complainId;
+    private String orderId;
     private String complainDetails;
     private String complainStatus;
     private String complainType;
