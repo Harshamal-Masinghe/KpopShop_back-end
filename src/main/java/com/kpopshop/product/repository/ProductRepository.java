@@ -11,6 +11,8 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
     List<Product> findByQuantityLessThan(int i);
 
+    List<Product> findByProductId(String productId);
+
     @Query("{'$or': [{'productId': {'$regex': ?0, '$options': 'i'}}, {'name': {'$regex': ?0, '$options': 'i'}}, {'size.name': {'$regex': ?0, '$options': 'i'}}, {'category.name': {'$regex': ?0, '$options': 'i'}}, {'description': {'$regex': ?0, '$options': 'i'}}]}")
     List<Product> searchByAllAttributes(String query);
 

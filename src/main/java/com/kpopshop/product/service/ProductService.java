@@ -47,6 +47,10 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    public List<Product> getProductsByProductId(String productId) {
+        return productRepository.findByProductId(productId);
+    }
+
     public Product updateProduct(String id, Product updatedProduct) {
         Optional<Product> existingProductOpt = productRepository.findById(id);
 

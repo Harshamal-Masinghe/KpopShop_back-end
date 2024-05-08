@@ -36,8 +36,16 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product createdProduct = productService.createProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
+        // Check if a product with the same productId already exists
+        List<Product> existingProducts = productService.getProductsByProductId(product.getProductId());
+        if (!existingProducts.isEmpty()) {
+            // If a product with the same productId exists, throw an exception or return a specific response
+            throw new RuntimeException("A product with the same productId already exists.");
+        }
+
+        // If no product with the same productId exists, save the new product
+        Product newProduct = productService.createProduct(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
 
     @PutMapping("/{id}")
