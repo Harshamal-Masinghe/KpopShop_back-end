@@ -13,7 +13,6 @@ import java.util.List;
 public class GiftBox {
         @Id
         private String giftBoxId;
-        private String userEmail;
         private GiftBoxColor boxColor;
         private CardType cardType;
         private String message = "";

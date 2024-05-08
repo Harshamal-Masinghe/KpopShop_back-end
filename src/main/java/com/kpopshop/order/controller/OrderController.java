@@ -49,4 +49,9 @@ public class OrderController {
         return ResponseEntity.ok(order);
     }
 
+    @GetMapping("/total/{month}")
+    public long getTotalOrderByMonth(@PathVariable int month) {
+        return orderService.getTotalOrderByMonth(month);
+    }
+
 }
