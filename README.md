@@ -73,8 +73,6 @@ The challenges faced by KpopShop.lk highlighted the need for a digital transform
 - **GitHub**: For version control and collaboration.
 - **IntelliJ IDEA**: For backend development.
 - **Postman**: For API testing.
-- **Junit**: For unit testing.
-- **ClickUp**: For project management.
 
 ## 📋 Inventory Management: Functional and Non-Functional Requirements
 ### Functional Requirements
